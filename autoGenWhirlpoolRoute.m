@@ -4,7 +4,7 @@ function [RouteX,RouteY] = autoGenWhirlpoolRoute(xVertex,yVertex,HalfWidth)
 %   此处显示详细说明
 
     NumVertex = length(xVertex) - 1;
-    X0 = mean(x(2:end));
+    X0 = mean(xVertex(2:end));
     Y0 = mean(yVertex(2:end));
     D = zeros(1,NumVertex);
     P0 = [X0,Y0];
