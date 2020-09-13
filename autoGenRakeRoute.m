@@ -53,12 +53,19 @@ function [RouteX,RouteY,Rect] = autoGenRakeRoute(xVertex,yVertex,Width)
         x2 = Rect(i).Xleft+Width/2;
 
         if(Des)
-            y1 = min(Rect(i).Ybottom, Rect(i+1).Ybottom);
-            y2 = max(Rect(i).Ytop, Rect(i+1).Ytop);
+            y1 = Rect(i).Ybottom;
+            y2 = Rect(i).Ytop;
         else
-            y2 = min(Rect(i).Ybottom, Rect(i+1).Ybottom);
-            y1 = max(Rect(i).Ytop, Rect(i+1).Ytop);
+            y2 = Rect(i).Ybottom;
+            y1 = Rect(i).Ytop;
         end
+%         if(Des)
+%             y1 = min(Rect(i).Ybottom, Rect(i+1).Ybottom);
+%             y2 = max(Rect(i).Ytop, Rect(i+1).Ytop);
+%         else
+%             y2 = min(Rect(i).Ybottom, Rect(i+1).Ybottom);
+%             y1 = max(Rect(i).Ytop, Rect(i+1).Ytop);
+%         end
         Des = ~Des;
         RouteX(i,:) = [x1,x2];
         RouteY(i,:) = [y1,y2];
