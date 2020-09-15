@@ -48,6 +48,7 @@ function [RouteX,RouteY,Rect] = autoGenRakeRoute(xVertex,yVertex,Width)
     Rect(NumRectangle).Ybottom = min(yCross(i,:));
     
     Des = true;
+    LastY = 0;
     for i = 1:NumRectangle-1
         x1 = Rect(i).Xleft+Width/2;
         x2 = Rect(i).Xleft+Width/2;
@@ -55,9 +56,11 @@ function [RouteX,RouteY,Rect] = autoGenRakeRoute(xVertex,yVertex,Width)
         if(Des)
             y1 = Rect(i).Ybottom;
             y2 = Rect(i).Ytop;
+            LastY =  min(yCross(i,:));
         else
             y2 = Rect(i).Ybottom;
             y1 = Rect(i).Ytop;
+            LastY =  max(yCross(i,:));
         end
 %         if(Des)
 %             y1 = min(Rect(i).Ybottom, Rect(i+1).Ybottom);
@@ -71,5 +74,7 @@ function [RouteX,RouteY,Rect] = autoGenRakeRoute(xVertex,yVertex,Width)
         RouteY(i,:) = [y1,y2];
     end
     RouteX(NumRectangle,:) = [x1,x2] + Width;
-    RouteY(NumRectangle,:) = [y2,y1];
+    RouteY(NumRectangle,:) = [y2,LastY];
+
+    RouteY(2:NumRectangle,1) = RouteY(1:NumRectangle-1,2);
 end
