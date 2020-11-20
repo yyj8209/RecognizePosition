@@ -1,7 +1,7 @@
-function [Lat,Lon,Angle,Status] = readDataFromCom2(data,DeltaLatA,DeltaLatB,FrameLength)
+function [LatA,LonA,Angle,Status] = readDataFromCom2(data,DeltaLatA,DeltaLatB,FrameLength)
 % [Lat,Lon,Angle,Status] = readDataFromCom2(data)
 % 输入：data 为从COM2读取的数据，FrameLength 为每一个协议帧的长度。
-% 输出：Lat 解析的纬度,Lon 为解析的经度,Angle 为返回的当前（前进）角度（）,
+% 输出：LatA 解析的纬度,LonA 为解析的经度,Angle 为返回的当前（前进）角度（应该是航向角）,
 % Status 为自动探扫时，机器人返回的状态 00：无动作；01：单次探扫启动；02：单次探扫停止；03：区域探扫结束。
 
 Lat = [];
@@ -45,10 +45,11 @@ for k = 1:length(Index)
         continue;
     end
 
-    Lon = [Lon;LatLon2Double(HexColumn(R1:R2-1,:))];
-    Lat = [Lat;LatLon2Double(HexColumn(R2:R3-1,:))];
+    LonO = [Lon;LatLon2Double(HexColumn(R1:R2-1,:))];% 回传的数据为O点坐标。
+    LatO = [Lat;LatLon2Double(HexColumn(R2:R3-1,:))];
     Angle = [Angle;AngleTransform(HexColumn(R3:R4-1,:),2)];
     Status = [Status;hex2dec(HexColumn(R4,:))];
-    [Lon,Lat] = myRotate(Lon,Lat,Lon,Lat+DeltaLatA,-Angle(1));  % 把定位天线的坐标换算为横臂中心坐标（O点）
-    [Lon,Lat] = myRotate(Lon,Lat,Lon,Lat+DeltaLatB,270-Angle(1));  % 换算为机器摇臂固定点中心坐标（A点）
+
+%     [LonO,LatO] = myRotate(LonC,LatC+DeltaLatA,LonC,LatC,-Angle(end));  % 把定位天线的坐标换算为横臂中心坐标（O点）
+    [LonA,LatA] = myRotate(LonO,LatO+DeltaLatB,LonO,LatO,270-Angle(end));  % 换算为机器摇臂固定点中心坐标（A点）
 end
