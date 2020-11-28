@@ -70,18 +70,16 @@ function [Array1,Array2,Array3,UTME,UTMN] = dataFromComtoArray4(AreaData)
         LenofData(i) = length(Data{4,i});
     end
     MaxLength = max(LenofData);     % 采集数据点最多的一次探扫。
-    Interval = (0:MaxLength-1)/MaxLength;
+    
     for i = 1:CellLen   % 找出X的最小范围
-        xq = MinValue(i)+Interval*(MaxValue(i)-MinValue(i));
-        yq = interpl(Data{4,i},Data{5,i},xq);
-        v1 = interpl(Data{4,i},Data{1,i},xq);
-        v2 = interpl(Data{4,i},Data{2,i},xq);
-        v3 = interpl(Data{4,i},Data{3,i},xq);
-        Data{1,i} = v1;
-        Data{2,i} = v2;
-        Data{3,i} = v3;
-        Data{4,i} = xq;
-        Data{5,i} = yq;
+%         Interval = (LenofData(i)-1)*(1:MaxLength-1)/(MaxLength-1);
+        x_pre = (0:LenofData(i)-1)/(LenofData(i)-1);
+        x_pro = (0:MaxLength-1)/(MaxLength-1);
+        Data{1,i} = interp1(x_pre,Data{1,i},x_pro);
+        Data{2,i} = interp1(x_pre,Data{2,i},x_pro);
+        Data{3,i} = interp1(x_pre,Data{3,i},x_pro);
+        Data{4,i} = interp1(x_pre,Data{4,i},x_pro);
+        Data{5,i} = interp1(x_pre,Data{5,i},x_pro);
     end
     
     
