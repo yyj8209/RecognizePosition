@@ -42,7 +42,8 @@ function [Array1,Array2,Array3,UTME,UTMN] = dataFromComtoArray4(AreaData)
             end
             x2 = x1 - mean(x1);      % 去直流。
             y1 = [x2(1)*ones(1,length(bL)),x2,x2(end)*ones(1,length(bL))];    % 滤波器对信号的首尾产生畸变，采用加数据法消除。
-            y2 = filtfilt(bL,1,y1);                               % 进行低通滤波
+            y2 = filtfilt(bL,1,y1);               
+            % 进行低通滤波
             y3 = y2(length(bL)+1:length(y2)-length(bL));
             y(k1,:) = y3 - mean(y3) + mean(x1);    % 到这一步已经恢复了信号。
         end
@@ -93,6 +94,12 @@ function [Array1,Array2,Array3,UTME,UTMN] = dataFromComtoArray4(AreaData)
         Array1(i,:) = Data{1,i};
         Array2(i,:) = Data{2,i};
         Array3(i,:) = Data{3,i};
-        [UTME(i,:), UTMN(i,:)] = myRotate(Data{4,i}+offsetX(i),Data{5,i}+offsetY(i),offsetX(i),offsetY(i),270-Yaw(i));    % 使之从航向角270旋转到实际角度。
+        UTME(i,:) = Data{4,i};
+        UTMN(i,:) = Data{5,i};
+        if(~mod(i,2))
+            UTME(i,:) = fliplr(Data{4,i});
+            UTMN(i,:) = fliplr(Data{5,i});
+        end
+%         [UTME(i,:), UTMN(i,:)] = myRotate(Data{4,i}+offsetX(i),Data{5,i}+offsetY(i),offsetX(i),offsetY(i),270-Yaw(i));    % 使之从航向角270旋转到实际角度。
     end
 end
