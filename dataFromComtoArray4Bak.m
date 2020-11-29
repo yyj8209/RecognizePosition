@@ -1,4 +1,4 @@
-function [Array1,Array2,Array3,UTME,UTMN] = dataFromComtoArray4(AreaData)
+function [Array1,Array2,Array3,UTME,UTMN] = dataFromComtoArray4Bak(AreaData)
 % [Array1,Array2,Array3,Deriction,UTME,UTMN] = dataFromComtoArray4(AreaData)
 % 不是补齐，而是以扫描数据最少的为基准，从两边去除其余扫描数据。
 % 输入：AreaData ，cell类型，每个cell是一个结构体，包含 SQNumber、Value（V1、V2、V3、UTME1、UTMN1、offsetX、offsetY、RobotAngle 共8个值）。
