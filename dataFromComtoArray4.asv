@@ -90,50 +90,45 @@ function [Array1,Array2,Array3,UTME,UTMN] = dataFromComtoArray4(AreaData)
         end
     end
     
-%     % 对齐左边
-%     yMaxLoc = zeros(1,CellLen);
-%     for i = CellLen
-%         [~, yMaxLoc(i)] = max(Data{5,i}); % 每行的Y最大值及位置，用以对准航向角270
-%     end
-%     [~, refLine] = min(abs(yMaxLoc - MaxLength/2));    % 探扫角度左右最对称的一次探扫。
-% %     [~, leftLine] = min(yMaxLoc - MaxLength/2);    % 探扫角度左侧最小的一次探扫。
-% %     [~, rightLine] = max(yMaxLoc - MaxLength/2);    % 探扫角度右侧最小的一次探扫。
-%     
-%     tLoc = yMaxLoc - yMaxLoc(refLine);    % 正Y轴对应点的偏移。
-%     for i = 1:CellLen
-%         tmp = [Data{1,i};Data{2,i};Data{3,i};Data{4,i};Data{5,i}];
-%         if(tLoc(i)>0)
-%             tmp(:,1:tLoc(i)) = [];  % 左侧探扫角度大就裁部分数据
-%         elseif(tLoc(i)<0)
-%             tmp = [repmat(tmp(:,1),1,abs(tLoc(i))),tmp];  % 右侧探扫角度大就在左侧添加部分数据
-%         end
-%         Data{1,i} = tmp(1,:);
-%         Data{2,i} = tmp(2,:);
-%         Data{3,i} = tmp(3,:);
-%         Data{4,i} = tmp(4,:);
-%         Data{5,i} = tmp(5,:);
-% 
-%     end
-%     % 对齐右边
-%     LenXMin = zeros(1,CellLen);
-%     for i = 1:CellLen
-%         LenXMin(i) = length( Data{4,i}); 
-%     end
-%     [LenMin,~] = min(LenXMin);    % 最短的那组。
-%     tLen = LenXMin - LenMin;  
-% %     tmpAngle = cell(1,Columns);
-%     for i = 1:CellLen
-%         if(~tLen(i)) % 不用补的情况。
-%             continue;
-%         end
-%         tmp = [Data{1,i};Data{2,i};Data{3,i};Data{4,i};Data{5,i}];
-%         tmp(:,1+LenMin:end) = [];  % 个人习惯每行为一次数据
-%         Data{1,i} = tmp(1,:);
-%         Data{2,i} = tmp(2,:);
-%         Data{3,i} = tmp(3,:);
-%         Data{4,i} = tmp(4,:);
-%         Data{5,i} = tmp(5,:);
-%     end
+    [~, yMaxLoc] = max(Data{5,:},[],2); % 每行的Y最大值及位置，用以对准航向角270
+    [~, refLine] = min(abs(yMaxLoc - MaxLength/2));    % 探扫角度左右最对称的一次探扫。
+%     [~, leftLine] = min(yMaxLoc - MaxLength/2);    % 探扫角度左侧最小的一次探扫。
+%     [~, rightLine] = max(yMaxLoc - MaxLength/2);    % 探扫角度右侧最小的一次探扫。
+    
+    tLoc = yMaxLoc - yMaxLoc(refLine);    % 正Y轴对应点的偏移。
+    for i = 1:CellLen
+        tmp = [Data{1,i};Data{2,i};Data{3,i};Data{4,i};Data{5,i}];
+        if(tLoc(i)>0)
+            tmp(:,1:tLoc(i)) = [];  % 左侧探扫角度大就裁部分数据
+        elseif(tLoc(i)<0)
+            tmp = [repmat(tmp(:,1),1,abs(tLoc(i))),tmp];  % 右侧探扫角度大就裁部分数据
+        end
+        Data{1,i} = tmp(1,:);
+        Data{2,i} = tmp(2,:);
+        Data{3,i} = tmp(3,:);
+        Data{4,i} = tmp(4,:);
+        Data{5,i} = tmp(5,:);
+
+    end
+    % 补后面的数据和角度。
+    for i = 1:CellLen
+        LenXMin(i) = length( Data{4,i}); 
+    end
+    [LenMin,~] = min(LenXMin);    % 最短的那组。
+    tLen = LenXMin - LenMin;  
+%     tmpAngle = cell(1,Columns);
+    for i = 1:CellLen
+        if(~tLen(i)) % 不用补的情况。
+            continue;
+        end
+        tmp = [Data{1,i};Data{2,i};Data{3,i};Data{4,i};Data{5,i}];
+        tmp(:,1+LenMin:end) = [];  % 个人习惯每行为一次数据
+        Data{1,i} = tmp(1,:);
+        Data{2,i} = tmp(2,:);
+        Data{3,i} = tmp(3,:);
+        Data{4,i} = tmp(4,:);
+        Data{5,i} = tmp(5,:);
+    end
 
     % 输出为后期处理需要的格式
     Array1 = zeros(CellLen,MaxLength);

@@ -9,10 +9,10 @@ function [output] = LatLon2Bytes(input)
 %     case 1
         output = ['00';'00';'00';'00';'00'];
         tmpDec = fix(input*1e9);  % 小数点移动9位后取整
-        tmpHex = dec2hex(tmpDec);
-        while(length(tmpHex)<10)
-            tmpHex = ['0',tmpHex];
-        end
+        tmpHex = dec2hex(tmpDec,10);
+%         while(length(tmpHex)<10)
+%             tmpHex = ['0',tmpHex];
+%         end
 %         for i = 1:5
 %             output(i,:) = tmpHex(2*i-1:2*i);
 %         end

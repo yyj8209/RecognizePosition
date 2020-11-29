@@ -1,4 +1,4 @@
-function [Order] = passPosition(Lon,Lat,x,y,SequenceNumber,TotalNumber)
+function [Order] = passPosition(Lon,Lat,AngleV,Step,OrderType,Radius,SequenceNumber,TotalNumber,x,y)
 %[Order] = controlOrder(Lat,Lon,OrderType)
 %   此处显示详细说明
 % 输入：Lon表示经度，Lat表示纬度，OrderType表示命令类型
@@ -7,38 +7,47 @@ function [Order] = passPosition(Lon,Lat,x,y,SequenceNumber,TotalNumber)
     HeadLen = 4;
     LonLen = 5;
     LatLen = 5;
-    xLen = 4;
-    yLen = 4;
+    AngleVLen = 1;
+    StepLen = 1;
+    RadiusLen = 4;
+    TypeLen = 1;
     SNLen = 1;
     TNLen = 1;
-    ReservedLen = 4;
-    
+    ReservedLen1 = 2;
+    ReservedLen2 = 2;
     R1 = HeadLen+1;
     R2 = LonLen+R1;
     R3 = LatLen+R2;
-    R4 = xLen+R3;
-    R5 = yLen+R4;
-    R6 = SNLen+R5;
-    R7 = TNLen+R6;
-    R8 = ReservedLen+R7;
+    R4 = AngleVLen+R3;
+    R5 = StepLen+R4;
+    R6 = RadiusLen+R5;
+    R7 = TypeLen+R6;
+    R8 = SNLen+R7;
+    R9 = TNLen+R8;
+    R10 = ReservedLen1+R9;
+    R11 = ReservedLen2+R10;
 
 % 控制命令格式，请参看协议。
-    InitialOrder = ['55';'AA';'03';'18';...    % 字节头
+    InitialOrder = ['55';'AA';'02';'1D';...    % 字节头
         '00';'00';'00';'00';'00';...           % 经度
         '00';'00';'00';'00';'00';...           % 纬度
-        '00';'00';'00';'00';...                % 平面坐标X
-        '00';'00';'00';'00';...                % 平面坐标Y 
-        '00';'00';...                          % 命令类型、坐标序号/总数
+        '00';'00';'00';'00';'00';'00';...      % 角速度1、步进1、半径4
+        '00';'00';'00';...                     % 命令类型、坐标序号/总数
         '00';'00';'00';'00'];                  % 备用4 .
     
     InitialOrder(R1:R2-1,:) = Lon;
     InitialOrder(R2:R3-1,:) = Lat;
-    InitialOrder(R3:R4-1,:) = x;
-    InitialOrder(R4:R5-1,:) = y;
-    InitialOrder(R5:R6-1,:) = SequenceNumber;
-    InitialOrder(R6,:) = TotalNumber;
-
+    InitialOrder(R3:R4-1,:) = AngleV;
+    InitialOrder(R4:R5-1,:) = Step;
+    InitialOrder(R5:R6-1,:) = Radius;
+    InitialOrder(R6,:) = OrderType;
+    InitialOrder(R7,:) = SequenceNumber;
+    InitialOrder(R8,:) = TotalNumber;
+    InitialOrder(R9:R10-1,:) = x;
+    InitialOrder(R10:R11-1,:) = y;
+    
     [Order,~] = CRC16_MODBUS(hex2dec(InitialOrder));
     Order = hex2dec(Order);
 end
+
 

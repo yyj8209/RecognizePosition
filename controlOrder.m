@@ -13,7 +13,8 @@ function [Order] = controlOrder(Lon,Lat,AngleV,Step,OrderType,Radius,SequenceNum
     TypeLen = 1;
     SNLen = 1;
     TNLen = 1;
-    ReservedLen = 4;
+    ReservedLen1 = 2;
+    ReservedLen2 = 2;
     R1 = HeadLen+1;
     R2 = LonLen+R1;
     R3 = LatLen+R2;
@@ -23,7 +24,8 @@ function [Order] = controlOrder(Lon,Lat,AngleV,Step,OrderType,Radius,SequenceNum
     R7 = TypeLen+R6;
     R8 = SNLen+R7;
     R9 = TNLen+R8;
-    R10 = ReservedLen+R9;
+    R10 = ReservedLen1+R9;
+    R11 = ReservedLen2+R10;
 
 % 控制命令格式，请参看协议。
     InitialOrder = ['55';'AA';'02';'1D';...    % 字节头
