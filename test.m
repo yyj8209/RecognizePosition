@@ -10,6 +10,7 @@ for i=1:len(2)
     end
     hold off;
 end
+legend;
 
 figure;
 title('̽ɨ�켣')
