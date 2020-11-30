@@ -36,7 +36,7 @@ for i = 1:FileNumSel
     fseek(fid,0,'bof');
     [A,count]=fread(fid,(filelength)/4,'float32');
     fclose(fid);
-    A = reshape(A,6,count/6);
+    A = reshape(A,8,count/8);
     x = ([A(1,:);A(2,:);A(3,:)])*5000/32768;
 
 % 2、提取'通道1峰值V1','通道2峰值V2','通道3峰值V3','Kr=斜率1/斜率2','V1/V3','均值EV1','EV2','方差DV1','DV2'。
