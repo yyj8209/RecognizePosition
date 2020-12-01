@@ -85,7 +85,10 @@ function [Array1,Array2,Array3,UTME,UTMN] = dataFromComtoArray4(AreaData)
         Data{4,i} = interp1(x_pre,Data{4,i},x_pro);
         Data{5,i} = interp1(x_pre,Data{5,i},x_pro);
         if(~mod(i,2))
-            Data{4,i} = fliplr(Data{4,i});   % 来/回扫时，幅值与坐标会左右相反。
+            Data{1,i} = fliplr(Data{1,i});   % 来/回扫时，幅值与坐标会左右相反。
+            Data{2,i} = fliplr(Data{2,i});
+            Data{3,i} = fliplr(Data{3,i});
+            Data{4,i} = fliplr(Data{4,i});
             Data{5,i} = fliplr(Data{5,i});
         end
     end
