@@ -26,6 +26,7 @@ switch inv
         tmpHex(5:6) = input(2,:);
         tmpHex(3:4) = input(3,:);
         tmpHex(1:2) = input(4,:);
-        output = double(typecast(uint32(hex2dec(tmpHex)),'single'));
+        output = hex2dec(tmpHex);
+%         output = double(typecast(uint32(hex2dec(tmpHex)),'single'));
     otherwise
 end
