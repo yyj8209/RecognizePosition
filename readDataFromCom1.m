@@ -1,4 +1,4 @@
-function [Value1,Value2,Value3,Lat,Lon,Height] = readDataFromCom1(data,FrameLength)
+function [Value1,Value2,Value3,Angle,Radius,Height] = readDataFromCom1(data,FrameLength)
 % [Value1,Value2,Value3,Lat,Lon] = readDataFromCom1(data,FrameLength,Type)
 % 输入：data 为从COM2读取的数据，FrameLength 为每一个协议帧的长度，Type为角度输入或坐标输入，LatLon为经纬度输入，Angle为角度半径输入。
 % 输出：Value1,Value2,Value3，分别为三个通道的数值。Lat 解析的纬度,Lon 为解析的经度。
@@ -6,8 +6,8 @@ function [Value1,Value2,Value3,Lat,Lon,Height] = readDataFromCom1(data,FrameLeng
 Value1 = [];
 Value2 = [];
 Value3 = [];
-Lon = [];
-Lat = [];
+Angle = [];
+Radius = [];
 Height = [];
 % Angle = [];
 % Radius = [];
@@ -15,15 +15,15 @@ HeadLen = 4;
 Value1Len = 4;
 Value2Len = 4;
 Value3Len = 4;
-LonLen = 4;
-LatLen = 4;
+AngleLen = 4;
+RadiusLen = 4;
 ReservedLen = 4;
 R1 = HeadLen+1;
 R2 = Value1Len+R1;
 R3 = Value2Len+R2;
 R4 = Value3Len+R3;
-R5 = LonLen+R4;
-R6 = LatLen+R5;
+R5 = AngleLen+R4;
+R6 = RadiusLen+R5;
 R7 = ReservedLen+R6;
 
 HexData = dec2hex(data);
@@ -52,9 +52,9 @@ for k = 1:length(Index)
     Value1 = [Value1;CHValueTransform(HexColumn(R1:R2-1,:),2)];
     Value2 = [Value2;CHValueTransform(HexColumn(R2:R3-1,:),2)];
     Value3 = [Value3;CHValueTransform(HexColumn(R3:R4-1,:),2)];
-    Lon = [Lon;CHValueTransform(HexColumn(R4:R5-1,:),2)];
-    Lat = [Lat;CHValueTransform(HexColumn(R5:R6-1,:),2)];
-    Height = [Height;CHValueTransform(HexColumn(R6:R7-1,:),2)];
+    Angle = [Angle;RadiusTransform(HexColumn(R4:R5-1,:),2)];
+    Radius = [Radius;RadiusTransform(HexColumn(R5:R6-1,:),2)];
+    Height = [Height;RadiusTransform(HexColumn(R6:R7-1,:),2)];
 end
 
 % else

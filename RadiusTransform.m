@@ -1,4 +1,4 @@
-function [output] = CHValueTransform(input,inv)
+function [output] = RadiusTransform(input,inv)
 % [output] = AngleTransform(input,inv)
 % 在串口传输中，通道信号的幅度占4个字节。此函数用于转换成/出串口的格式。
 % inv = 1时，表示幅度转字节，inv=2时表示4字节转幅度
@@ -26,7 +26,7 @@ switch inv
         tmpHex(5:6) = input(2,:);
         tmpHex(3:4) = input(3,:);
         tmpHex(1:2) = input(4,:);
-%         output = hex2dec(tmpHex);
-        output = double(typecast(uint32(hex2dec(tmpHex)),'single'));
+        output = hex2dec(tmpHex);
+%         output = double(typecast(uint32(hex2dec(tmpHex)),'single'));
     otherwise
 end
