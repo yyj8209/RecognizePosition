@@ -150,6 +150,6 @@ function [Array1,Array2,Array3,UTME,UTMN] = dataFromComtoArray4(AreaData)
         Array3(i,:) = Data{3,i};
         UTME(i,:) = Data{4,i};
         UTMN(i,:) = Data{5,i};
-        [UTME(i,:), UTMN(i,:)] = myRotate(Data{4,i}+offsetX(i),Data{5,i}+offsetY(i),offsetX(i),offsetY(i),270-Yaw(i));    % 使之从航向角270旋转到实际角度。
+        [UTME(i,:), UTMN(i,:)] = myRotate(Data{4,i}+offsetX(i),Data{5,i}+offsetY(i),offsetX(i),offsetY(i),-Yaw(i));    % 使之从航向角270旋转到实际角度。
     end
 end
